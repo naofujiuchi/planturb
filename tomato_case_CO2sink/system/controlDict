@@ -1,0 +1,68 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \    /   O peration     | Version: 10                                     |
+|   \  /    A nd           | Website:  https://openfoam.org                  |
+|    \/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+application     scalarSimpleFoam;
+startFrom       startTime;
+startTime       0;
+stopAt          endTime;
+endTime         1000;
+deltaT          1;
+writeControl    timeStep;
+writeInterval   100;
+purgeWrite      0;
+writeFormat     ascii;
+writePrecision  6;
+writeCompression off;
+timeFormat      general;
+timePrecision   6;
+runTimeModifiable true;
+
+functions
+{
+    averageCO2
+    {
+        type            surfaceFieldValue;
+        functionObjectLibs ("libfieldFunctionObjects.so");
+        enabled         true;
+        writeControl    timeStep;
+        writeInterval   1;
+        regionType      patch;
+        name            tomato;
+        operation       areaAverage;
+        fields
+        (
+            CO2
+        );
+        writeFields     yes;
+        surfaceFormat   raw;
+    }
+//    totalCO2Gradient
+//    {
+//        type            surfaceFieldValue;
+//        functionObjectLibs ("libfieldFunctionObjects.so");
+//        enabled         true;
+//        writeControl    timeStep;
+//        writeInterval   1;
+//        regionType      patch;
+//        name            tomato;
+//        operation       areaIntegrate;
+//        fields
+//        (
+//            "snGrad(CO2)"
+//        );
+//        surfaceFormat   raw;
+//    }
+}
